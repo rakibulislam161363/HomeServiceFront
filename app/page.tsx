@@ -1,7 +1,10 @@
-import { Button } from "@/components/ui/button";
+// import HeroSection from "@/components/home/HeroSection";
+import Hero from "@/components/home/Hero";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <Button className={`w-50`}>Click</Button>
+    <main>
+      <Hero />
+    </main>
   );
 }

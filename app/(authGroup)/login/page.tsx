@@ -1,10 +1,10 @@
+import LoginForm from "../_component/loginFrom";
 
-const Page = () => {
-    return (
-        <div>
-            login page
-        </div>
-    );
+
+export default function LoginPage() {
+  return (
+    <main className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
+      <LoginForm />
+    </main>
+  );
 }
-
-export default Page;

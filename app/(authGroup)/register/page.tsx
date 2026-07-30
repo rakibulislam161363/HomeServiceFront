@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { RegisterFormValues, registerSchema } from "../_action/schema";
+import { RegisterFormValues, registerSchema } from "./schema";
 import { registrationForm } from "../_action/authActions";
 
 export default function RegisterForm() {
@@ -57,7 +57,7 @@ export default function RegisterForm() {
     const result = await registrationForm(data);
 
     if (!result.success) {
-      toast.error("Registration failed!", {
+      toast.error(result.message, {
         className:
         "bg-red-600! text-white! border-red-600!",
     })
