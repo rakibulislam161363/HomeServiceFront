@@ -51,11 +51,25 @@ export default function Navbar({ user }: NavbarProps) {
   const router = useRouter();
 
   // Safe role
-  const role = user?.role?.toLowerCase();
-
-  const dashboardPath = role
-    ? `/dashboard/${role}`
-    : "/login";
+  const dashboardPath = user
+  ? user.role === "CUSTOMER"
+    ? "/dashboard"
+    : user.role === "TECHNICIAN"
+      ? "/technician-dashboard"
+      : user.role === "ADMIN"
+        ? "/admin-dashboard"
+        : "/"
+  : "/login";
+  // profile path
+  const profilePath = user
+  ? user.role === "CUSTOMER"
+    ? "/dashboard/profile"
+    : user.role === "TECHNICIAN"
+      ? "/technician-dashboard/profile"
+      : user.role === "ADMIN"
+        ? "/admin-dashboard/profile"
+        : "/"
+  : "/login";
 
   // User initials
   const initials = user?.name
@@ -86,7 +100,7 @@ export default function Navbar({ user }: NavbarProps) {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/70">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/70">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
 
         {/* ================= LOGO ================= */}
@@ -174,7 +188,7 @@ export default function Navbar({ user }: NavbarProps) {
 
                 {/* Profile */}
                 <DropdownMenuItem
-                  onClick={() => router.push("/profile")}
+                  onClick={() => router.push(profilePath)}
                 >
                   <UserRound className="mr-2 h-4 w-4" />
                   <span>Profile</span>

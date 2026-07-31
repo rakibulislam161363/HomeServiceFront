@@ -9,7 +9,7 @@ export const technicianProfileSchema = z.object({
   experience: z
     .number()
     .min(0, "Experience cannot be negative")
-    .max(50, "Please enter a valid experience"),
+    .max(50, "Experience cannot exceed 50 years"),
 
   address: z
     .string()

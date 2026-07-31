@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { revalidateTag } from "next/cache";
 import { TechnicianProfileFormValues } from "../technician-dashboard/schema";
 
+
 export const createTechnicianProfile = async (
   data: TechnicianProfileFormValues
 ) => {
@@ -52,7 +53,7 @@ export const createTechnicianProfile = async (
       data: result.data,
     };
   } catch (error) {
-    console.error("Create technician profile error:", error);
+    console.error("Create profile error:", error);
 
     return {
       success: false,
