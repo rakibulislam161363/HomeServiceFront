@@ -1,5 +1,5 @@
 
-import { ServicesResponse } from "@/lib/types";
+import { Service, ServicesResponse } from "@/lib/types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -59,4 +59,24 @@ export const getServices = async (
   }
 
   return response.json();
+};
+
+export const getServiceById = async (
+  id: string
+): Promise<Service> => {
+  const response = await fetch(
+    `${API_URL}/api/services/${id}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch service");
+  }
+
+  const result = await response.json();
+
+  return result.data;
 };
