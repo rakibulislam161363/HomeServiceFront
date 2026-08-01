@@ -44,17 +44,17 @@ export default function AddServiceForm({
     useForm<FormValues>();
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Form:", data);
-    console.log("Category:", categoryId);
-    setLoading(true);
+    if (!categoryId) {
+      toast.error("Please select a category");
+      return;
+    };
 
     const result = await createService({
   ...data,
   categoryId,
 });
 
-console.log("RESULT:", result);
-
+console.log(result);
 
 if (!result.success) {
   toast.error(result.message);
@@ -64,8 +64,10 @@ if (!result.success) {
 
 toast.success(result.message);
 
+console.log("Redirecting...");
+
 router.push("/technician-dashboard");
-router.refresh();
+
   };
 
   return (
