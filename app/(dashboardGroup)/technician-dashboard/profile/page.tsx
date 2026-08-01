@@ -4,7 +4,8 @@ import TechnicianProfileForm from "../../_components/_technician/TechnicianProfi
 export default async function TechnicianProfilePage() {
   const profile = await getMyTechnicianProfile();
 
-console.log("PROFILE FROM PAGE:", profile);
+  console.log("PROFILE FROM PAGE:", profile);
+
   return (
     <main className="min-h-screen bg-muted/30 px-4 py-10">
       <div className="mx-auto max-w-6xl">
@@ -19,7 +20,7 @@ console.log("PROFILE FROM PAGE:", profile);
           </p>
         </div>
 
-        <TechnicianProfileForm />
+        <TechnicianProfileForm profile={profile} />
       </div>
     </main>
   );

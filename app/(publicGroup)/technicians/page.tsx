@@ -1,11 +1,12 @@
-import React from 'react';
+
 
 const Page = () => {
     return (
         <div>
-            Tecnichian
+            tecnicians
         </div>
     );
 }
 
 export default Page;
+

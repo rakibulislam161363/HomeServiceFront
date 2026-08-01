@@ -17,14 +17,47 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { TechnicianProfileFormValues, technicianProfileSchema } from "../../technician-dashboard/schema";
-import { createTechnicianProfile } from "../../_actions/technicianActions";
 
+import {
+  TechnicianProfileFormValues,
+  technicianProfileSchema,
+} from "../../technician-dashboard/schema";
 
-export default function TechnicianProfileForm() {
+import {
+  createTechnicianProfile,
+  updateTechnicianProfile,
+} from "../../_actions/technicianActions";
+
+interface TechnicianProfile {
+  id: string;
+  userId: string;
+  bio: string | null;
+  experience: number;
+  address: string;
+  rating: number;
+  totalReviews: number;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    role: string;
+    status: string;
+  };
+}
+
+interface TechnicianProfileFormProps {
+  profile: TechnicianProfile | null;
+}
+
+export default function TechnicianProfileForm({
+  profile,
+}: TechnicianProfileFormProps) {
   const router = useRouter();
 
   const [loading, setLoading] = useState(false);
+
+  const isEditMode = Boolean(profile);
 
   const {
     register,
@@ -32,10 +65,11 @@ export default function TechnicianProfileForm() {
     formState: { errors },
   } = useForm<TechnicianProfileFormValues>({
     resolver: zodResolver(technicianProfileSchema),
+
     defaultValues: {
-      bio: "",
-      experience: 0,
-      address: "",
+      bio: profile?.bio ?? "",
+      experience: profile?.experience ?? 0,
+      address: profile?.address ?? "",
     },
   });
 
@@ -45,7 +79,9 @@ export default function TechnicianProfileForm() {
     try {
       setLoading(true);
 
-      const result = await createTechnicianProfile(data);
+      const result = isEditMode
+        ? await updateTechnicianProfile(data)
+        : await createTechnicianProfile(data);
 
       if (!result.success) {
         toast.error(result.message);
@@ -54,7 +90,6 @@ export default function TechnicianProfileForm() {
 
       toast.success(result.message);
 
-      router.push("/dashboard/technician");
       router.refresh();
     } catch (error) {
       console.error(error);
@@ -71,12 +106,15 @@ export default function TechnicianProfileForm() {
     <Card className="mx-auto w-full max-w-2xl">
       <CardHeader>
         <CardTitle className="text-2xl">
-          Setup Your Technician Profile
+          {isEditMode
+            ? "Edit Technician Profile"
+            : "Setup Your Technician Profile"}
         </CardTitle>
 
         <CardDescription>
-          Complete your professional profile so customers
-          can learn more about you.
+          {isEditMode
+            ? "Update your professional information."
+            : "Complete your professional profile so customers can learn more about you."}
         </CardDescription>
       </CardHeader>
 
@@ -163,8 +201,12 @@ export default function TechnicianProfileForm() {
             disabled={loading}
           >
             {loading
-              ? "Creating Profile..."
-              : "Create Profile"}
+              ? isEditMode
+                ? "Updating Profile..."
+                : "Creating Profile..."
+              : isEditMode
+                ? "Update Profile"
+                : "Create Profile"}
           </Button>
         </form>
       </CardContent>
