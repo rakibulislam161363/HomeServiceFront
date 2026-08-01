@@ -1,12 +1,15 @@
-import { getCategories } from "../../../_actions/categoryActions";
-import AddServiceForm from "../../../_components/_technician/AddServiceForm";
+import { getCategories } from "@/app/(dashboardGroup)/_actions/categoryActions";
+import ServiceForm from "@/app/(dashboardGroup)/_components/_technician/ServiceForm";
 
-export default async function CreateServicePage() {
-  const categories = await getCategories();
+export default async function CreateServicePage(){
 
-  return (
-    <div className="container mx-auto max-w-3xl py-8">
-      <AddServiceForm categories={categories} />
-    </div>
-  );
+    const categories=await getCategories();
+
+    return(
+
+        <ServiceForm
+            categories={categories}
+        />
+
+    )
 }

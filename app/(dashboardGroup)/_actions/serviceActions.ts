@@ -70,3 +70,66 @@ console.log("OK:", response.ok);
     };
   }
 };
+
+export const updateService = async (
+  id: string,
+  data: Partial<CreateServicePayload>
+) => {
+  const cookieStore = await cookies();
+
+  const accessToken =
+    cookieStore.get("accessToken")?.value;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/services/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: `accessToken=${accessToken}`,
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  return response.json();
+};
+
+export const deleteService = async (id: string) => {
+  const cookieStore = await cookies();
+
+  const accessToken =
+    cookieStore.get("accessToken")?.value;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/services/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        Cookie: `accessToken=${accessToken}`,
+      },
+    }
+  );
+
+  return response.json();
+};
+
+export const getServiceById = async (id: string) => {
+  const cookieStore = await cookies();
+
+  const accessToken = cookieStore.get("accessToken")?.value;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/services/${id}`,
+    {
+      headers: {
+        Cookie: `accessToken=${accessToken}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  const result = await response.json();
+
+  return result.data;
+};

@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Service, TechnicianDashboardProps } from "@/lib/types";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { deleteService } from "../../_actions/serviceActions";
 interface Props {
   profile: TechnicianDashboardProps["profile"];
 }
@@ -12,7 +15,28 @@ interface Props {
 export default function TechnicianDashboard({
   profile,
 }: Props) {
+  const router = useRouter();
   const services = profile?.user?.services || [];
+
+  const handleDelete = async (id: string) => {
+
+  const ok = confirm(
+    "Are you sure you want to delete this service?"
+  );
+
+  if (!ok) return;
+
+  const result = await deleteService(id);
+
+  if (!result.success) {
+    toast.error(result.message);
+    return;
+  }
+
+  toast.success("Service deleted");
+
+  router.refresh();
+};
 
   return (
     <div className="space-y-8">
@@ -157,25 +181,29 @@ export default function TechnicianDashboard({
                 {service.status}
               </span>
 
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() =>
-                  console.log("Edit", service.id)
-                }
-              >
-                Edit
-              </Button>
+              <div className="flex gap-2 mt-3">
 
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={() =>
-                  console.log("Delete", service.id)
-                }
-              >
-                Delete
-              </Button>
+  <Button
+    size="sm"
+    variant="outline"
+    onClick={() =>
+      router.push(
+        `/technician-dashboard/services/edit/${service.id}`
+      )
+    }
+  >
+    Edit
+  </Button>
+
+  <Button
+    size="sm"
+    variant="destructive"
+    onClick={() => handleDelete(service.id)}
+  >
+    Delete
+  </Button>
+
+</div>
             </div>
           </div>
         ))}

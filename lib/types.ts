@@ -28,17 +28,18 @@ export interface Technician {
   updatedAt: string;
 }
 
+
 export interface Service {
   id: string;
   title: string;
   description: string;
   price: number;
+  location: string;
   status: string;
-  category: {
-    id: string;
-    name: string;
-  };
-};
+
+  category: Category;
+  technician: Technician;
+}
 
 export interface ServiceMeta {
   page: number;
@@ -69,5 +70,32 @@ export interface TechnicianDashboardProps {
     address: string;
     rating: number;
     totalReviews: number;
+  };
+}
+
+export interface Booking {
+  id: string;
+  bookingDate: string;
+  address: string;
+  note?: string;
+  totalPrice: number;
+  status: string;
+
+  service: {
+    id: string;
+    title: string;
+    category: {
+      name: string;
+    };
+  };
+
+  customer: {
+    id: string;
+    name: string;
+  };
+
+  technician: {
+    id: string;
+    name: string;
   };
 }
