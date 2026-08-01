@@ -49,20 +49,23 @@ export default function AddServiceForm({
     setLoading(true);
 
     const result = await createService({
-      ...data,
-      categoryId,
-    });
+  ...data,
+  categoryId,
+});
 
-    if (!result.success) {
-      toast.error(result.message);
-      setLoading(false);
-      return;
-    }
+console.log("RESULT:", result);
 
-    toast.success(result.message);
 
-    router.push("/dashboard/technician");
-    router.refresh();
+if (!result.success) {
+  toast.error(result.message);
+  setLoading(false);
+  return;
+}
+
+toast.success(result.message);
+
+router.push("/technician-dashboard");
+router.refresh();
   };
 
   return (

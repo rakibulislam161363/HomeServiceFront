@@ -26,6 +26,8 @@ export const createService = async (
       };
     }
 
+    console.log("SEND DATA:", data);
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
       {
@@ -39,7 +41,12 @@ export const createService = async (
       }
     );
 
+    console.log("STATUS:", response.status);
+console.log("OK:", response.ok);
+
     const result = await response.json();
+
+    console.log("RESULT:", result);
 
     if (!response.ok) {
       return {
@@ -51,11 +58,11 @@ export const createService = async (
 
     return {
       success: true,
-      message: "Service created successfully",
+      message: result.message,
       data: result.data,
     };
   } catch (error) {
-    console.error(error);
+    console.error("CREATE SERVICE ERROR:", error);
 
     return {
       success: false,
