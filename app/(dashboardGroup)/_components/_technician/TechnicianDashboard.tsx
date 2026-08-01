@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Service, TechnicianDashboardProps } from "@/lib/types";
+import Link from "next/link";
 interface Props {
   profile: TechnicianDashboardProps["profile"];
 }
@@ -91,9 +92,9 @@ export default function TechnicianDashboard({
         </p>
       </div>
 
-      <Button>
-        Add Service
-      </Button>
+      <Link href="/technician-dashboard/services/create">
+  <Button>Add Service</Button>
+</Link>
     </div>
 
     {services.length === 0 ? (
@@ -106,9 +107,9 @@ export default function TechnicianDashboard({
           Create your first service to start receiving bookings.
         </p>
 
-        <Button className="mt-5">
-          Create Service
-        </Button>
+        <Link href="/technician-dashboard/services/create">
+            <Button>Add Service</Button>
+         </Link>
       </div>
     ) : (
       <div className="space-y-4">

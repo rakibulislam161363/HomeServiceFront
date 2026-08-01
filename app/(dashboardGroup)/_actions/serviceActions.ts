@@ -1,0 +1,65 @@
+"use server";
+
+import { cookies } from "next/headers";
+
+export interface CreateServicePayload {
+  title: string;
+  description: string;
+  price: number;
+  location: string;
+  categoryId: string;
+}
+
+export const createService = async (
+  data: CreateServicePayload
+) => {
+  try {
+    const cookieStore = await cookies();
+
+    const accessToken =
+      cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) {
+      return {
+        success: false,
+        message: "You are not logged in",
+      };
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/services`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Cookie: `accessToken=${accessToken}`,
+        },
+        body: JSON.stringify(data),
+        cache: "no-store",
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        message:
+          result?.message || "Failed to create service",
+      };
+    }
+
+    return {
+      success: true,
+      message: "Service created successfully",
+      data: result.data,
+    };
+  } catch (error) {
+    console.error(error);
+
+    return {
+      success: false,
+      message: "Something went wrong",
+    };
+  }
+};
