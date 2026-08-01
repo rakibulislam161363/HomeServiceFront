@@ -1,318 +1,188 @@
 "use client";
 
-import Link from "next/link";
-import {
-  CalendarDays,
-  CheckCircle2,
-  Clock3,
-  Plus,
-  Settings,
-  Star,
-  Wrench,
-  ArrowRight,
-} from "lucide-react";
-
-// import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
-interface TechnicianProfile {
-  id: string;
-  userId: string;
-  bio: string | null;
-  experience: number;
-  address: string;
-  rating: number;
-  totalReviews: number;
-
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    phone: string;
-    role: string;
-    status: string;
-  };
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Service, TechnicianDashboardProps } from "@/lib/types";
+interface Props {
+  profile: TechnicianDashboardProps["profile"];
 }
 
-interface TechnicianDashboardProps {
-  profile: TechnicianProfile | null;
-}
 
 export default function TechnicianDashboard({
   profile,
-}: TechnicianDashboardProps) {
-  const name = profile?.user?.name ?? "Technician";
+}: Props) {
+  const services = profile?.user?.services || [];
 
   return (
-    <main className="min-h-screen bg-muted/30 px-4 py-8">
-      <div className="mx-auto max-w-7xl space-y-8">
+    <div className="space-y-8">
 
-        {/* ================= HEADER ================= */}
-        <section className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <p className="text-sm font-medium text-primary">
-              Technician Dashboard
-            </p>
+      <div>
+        <h1 className="text-3xl font-bold">
+          Welcome, {profile.user.name} 👋
+        </h1>
 
-            <h1 className="mt-1 text-3xl font-bold tracking-tight">
-              Welcome back, {name} 👋
-            </h1>
+        <p className="text-muted-foreground">
+          Manage your technician account
+        </p>
+      </div>
 
-            <p className="mt-2 text-muted-foreground">
-              Manage your services, bookings and professional profile.
-            </p>
-          </div>
+      {/* Statistics */}
 
-          <Link
-            href="/dashboard/technician/services/create"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            <Plus className="h-4 w-4" />
-            Add Service
-          </Link>
-        </section>
+      <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-4">
 
-        {/* ================= STATS ================= */}
-        <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-
-          <StatsCard
-            title="Total Services"
-            value="0"
-            description="Services you provide"
-            icon={<Wrench className="h-5 w-5" />}
-          />
-
-          <StatsCard
-            title="Pending Bookings"
-            value="0"
-            description="Bookings waiting"
-            icon={<Clock3 className="h-5 w-5" />}
-          />
-
-          <StatsCard
-            title="Completed Jobs"
-            value="0"
-            description="Jobs completed"
-            icon={<CheckCircle2 className="h-5 w-5" />}
-          />
-
-          <StatsCard
-            title="Average Rating"
-            value={profile?.rating?.toFixed(1) ?? "0.0"}
-            description={`${profile?.totalReviews ?? 0} reviews`}
-            icon={<Star className="h-5 w-5" />}
-          />
-
-        </section>
-
-        {/* ================= PROFILE + SERVICES ================= */}
-        <section className="grid gap-6 lg:grid-cols-3">
-
-          {/* PROFILE */}
-          <Card className="lg:col-span-1">
-            <CardHeader>
-              <CardTitle>My Profile</CardTitle>
-            </CardHeader>
-
-            <CardContent className="space-y-5">
-
-              <ProfileItem
-                label="Name"
-                value={profile?.user?.name ?? "Not available"}
-              />
-
-              <ProfileItem
-                label="Email"
-                value={profile?.user?.email ?? "Not available"}
-              />
-
-              <ProfileItem
-                label="Phone"
-                value={profile?.user?.phone ?? "Not available"}
-              />
-
-              <ProfileItem
-                label="Experience"
-                value={`${profile?.experience ?? 0} years`}
-              />
-
-              <ProfileItem
-                label="Location"
-                value={profile?.address ?? "Not available"}
-              />
-
-              <div>
-                <p className="text-sm text-muted-foreground">
-                  Professional Bio
-                </p>
-
-                <p className="mt-1 text-sm leading-6">
-                  {profile?.bio || "No professional bio added yet."}
-                </p>
-              </div>
-
-              <Link
-                href="/dashboard/technician/profile"
-                className="inline-flex h-10 w-full items-center justify-center gap-2 rounded-md border bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
-              >
-                <Settings className="h-4 w-4" />
-                Edit Profile
-              </Link>
-
-            </CardContent>
-          </Card>
-
-          {/* SERVICES */}
-          <Card className="lg:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle>My Services</CardTitle>
-
-              <Link
-                href="/dashboard/technician/services"
-                className="inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
-              >
-                View All
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </CardHeader>
-
-            <CardContent>
-
-              <div className="flex min-h-55 flex-col items-center justify-center rounded-lg border border-dashed p-6 text-center">
-
-                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-                  <Wrench className="h-6 w-6 text-primary" />
-                </div>
-
-                <h3 className="font-semibold">
-                  Manage your services
-                </h3>
-
-                <p className="mt-1 max-w-md text-sm text-muted-foreground">
-                  Add services like AC repair, electrical work,
-                  plumbing and cleaning so customers can find you.
-                </p>
-
-                <Link
-                  href="/dashboard/technician/services/create"
-                  className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-                >
-                  <Plus className="h-4 w-4" />
-                  Create Service
-                </Link>
-
-              </div>
-
-            </CardContent>
-          </Card>
-
-        </section>
-
-        {/* ================= BOOKINGS ================= */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Recent Bookings</CardTitle>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground text-sm">
+              Services
+            </p>
 
-            <Link
-              href="/dashboard/technician/bookings"
-              className="inline-flex h-9 items-center justify-center gap-2 rounded-md border bg-background px-3 text-sm font-medium transition-colors hover:bg-muted"
-            >
-              View All
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </CardHeader>
+            <h2 className="text-3xl font-bold">
+              {services.length}
+            </h2>
+          </CardContent>
+        </Card>
 
-          <CardContent>
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground text-sm">
+              Rating
+            </p>
 
-            <div className="flex min-h-40 flex-col items-center justify-center rounded-lg border border-dashed text-center">
+            <h2 className="text-3xl font-bold">
+              {profile.rating}
+            </h2>
+          </CardContent>
+        </Card>
 
-              <CalendarDays className="mb-3 h-8 w-8 text-muted-foreground" />
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground text-sm">
+              Reviews
+            </p>
 
-              <h3 className="font-medium">
-                No bookings yet
-              </h3>
+            <h2 className="text-3xl font-bold">
+              {profile.totalReviews}
+            </h2>
+          </CardContent>
+        </Card>
 
-              <p className="mt-1 text-sm text-muted-foreground">
-                Your customer bookings will appear here.
-              </p>
+        <Card>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground text-sm">
+              Experience
+            </p>
 
-            </div>
-
+            <h2 className="text-3xl font-bold">
+              {profile.experience}+
+            </h2>
           </CardContent>
         </Card>
 
       </div>
-    </main>
-  );
-}
 
+      {/* Services */}
+      <Card>
+  <CardContent className="pt-6">
+    <div className="mb-6 flex items-center justify-between">
+      <div>
+        <h2 className="text-xl font-semibold">My Services</h2>
+        <p className="text-sm text-muted-foreground">
+          Manage all of your services
+        </p>
+      </div>
 
-/* ================= STATS CARD ================= */
+      <Button>
+        Add Service
+      </Button>
+    </div>
 
-function StatsCard({
-  title,
-  value,
-  description,
-  icon,
-}: {
-  title: string;
-  value: string;
-  description: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <Card>
-      <CardContent className="p-6">
+    {services.length === 0 ? (
+      <div className="rounded-lg border border-dashed py-12 text-center">
+        <h3 className="text-lg font-semibold">
+          No Services Found
+        </h3>
 
-        <div className="flex items-center justify-between">
-          <p className="text-sm font-medium text-muted-foreground">
-            {title}
-          </p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Create your first service to start receiving bookings.
+        </p>
 
-          <div className="rounded-lg bg-primary/10 p-2 text-primary">
-            {icon}
+        <Button className="mt-5">
+          Create Service
+        </Button>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        {services.map((service: Service) => (
+          <div
+            key={service.id}
+            className="flex flex-col gap-4 rounded-xl border p-5 transition-all hover:shadow-md md:flex-row md:items-center md:justify-between"
+          >
+            {/* Left */}
+            <div className="space-y-2">
+              <h3 className="text-lg font-semibold">
+                {service.title}
+              </h3>
+
+              <p className="text-sm text-muted-foreground">
+                {service.description}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                <span>
+                  Category:
+                  <span className="ml-1 font-medium text-foreground">
+                    {service.category.name}
+                  </span>
+                </span>
+
+                <span>
+                  Price:
+                  <span className="ml-1 font-semibold text-primary">
+                    ৳ {service.price}
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            {/* Right */}
+            <div className="flex items-center gap-3">
+              <span
+                className={`rounded-full px-3 py-1 text-xs font-medium ${
+                  service.status === "AVAILABLE"
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {service.status}
+              </span>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() =>
+                  console.log("Edit", service.id)
+                }
+              >
+                Edit
+              </Button>
+
+              <Button
+                variant="destructive"
+                size="sm"
+                onClick={() =>
+                  console.log("Delete", service.id)
+                }
+              >
+                Delete
+              </Button>
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
+    )}
+  </CardContent>
+</Card>
 
-        <div className="mt-4">
-          <p className="text-3xl font-bold">
-            {value}
-          </p>
-
-          <p className="mt-1 text-xs text-muted-foreground">
-            {description}
-          </p>
-        </div>
-
-      </CardContent>
-    </Card>
-  );
-}
-
-
-/* ================= PROFILE ITEM ================= */
-
-function ProfileItem({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div>
-      <p className="text-sm text-muted-foreground">
-        {label}
-      </p>
-
-      <p className="mt-1 font-medium">
-        {value}
-      </p>
     </div>
   );
 }

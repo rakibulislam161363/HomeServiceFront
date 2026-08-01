@@ -33,15 +33,12 @@ export interface Service {
   title: string;
   description: string;
   price: number;
-  status: ServiceStatus;
-  categoryId: string;
-  technicianId: string;
-  createdAt: string;
-  updatedAt: string;
-
-  category: Category;
-  technician: Technician;
-}
+  status: string;
+  category: {
+    id: string;
+    name: string;
+  };
+};
 
 export interface ServiceMeta {
   page: number;
@@ -56,5 +53,21 @@ export interface ServicesResponse {
   data: {
     meta: ServiceMeta;
     data: Service[];
+  };
+}
+
+export interface TechnicianDashboardProps {
+  profile: {
+    user: {
+      name: string;
+      email: string;
+      phone: string;
+      services: Service[];
+    };
+    bio: string;
+    experience: number;
+    address: string;
+    rating: number;
+    totalReviews: number;
   };
 }
