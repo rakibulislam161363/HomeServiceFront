@@ -26,7 +26,7 @@ export const createBooking = async (
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/bookings`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/booking`,
       {
         method: "POST",
         headers: {
@@ -71,7 +71,7 @@ export const getMyBookings = async () => {
     if (!accessToken) return [];
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/bookings`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/booking`,
       {
         headers: {
           Cookie: `accessToken=${accessToken}`,
@@ -113,7 +113,7 @@ export const updateBookingStatus = async (
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/bookings/${bookingId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/booking/${bookingId}`,
       {
         method: "PATCH",
         headers: {
