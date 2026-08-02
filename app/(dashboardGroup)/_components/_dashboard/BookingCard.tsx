@@ -6,6 +6,9 @@ import { CalendarDays, MapPin, User, Tag } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Booking } from "@/lib/types";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { cancelBooking } from "@/app/(publicGroup)/_action/bookingActions";
 
 interface BookingCardProps {
   booking: Booking;
@@ -14,6 +17,22 @@ interface BookingCardProps {
 export default function BookingCard({
   booking,
 }: BookingCardProps) {
+  const router = useRouter();
+
+  const handleCancel = async () => {
+  const result = await cancelBooking(
+    booking.id
+  );
+
+  if (!result.success) {
+    toast.error(result.message);
+    return;
+  }
+
+  toast.success(result.message);
+
+  router.refresh();
+};
   const getStatusVariant = () => {
     switch (booking.status) {
       case "REQUESTED":
@@ -102,7 +121,7 @@ export default function BookingCard({
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
-          href={`/customer-dashboard/bookings/${booking.id}`}
+          href={`/dashboard/bookings/${booking.id}`}
         >
           <Button variant="outline">
             View Details
@@ -110,9 +129,12 @@ export default function BookingCard({
         </Link>
 
         {booking.status === "REQUESTED" && (
-          <Button variant="destructive">
-            Cancel Booking
-          </Button>
+          <Button
+  variant="destructive"
+  onClick={handleCancel}
+>
+  Cancel Booking
+</Button>
         )}
       </div>
     </div>

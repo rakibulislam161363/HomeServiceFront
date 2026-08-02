@@ -74,7 +74,7 @@ export default function BookingForm({
 
     toast.success(result.message);
 
-    router.push("/my-bookings");
+    router.push("/dashboard/bookings");
   };
 
   return (

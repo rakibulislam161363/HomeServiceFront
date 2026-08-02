@@ -1,5 +1,6 @@
 "use server";
-
+import { Booking } from "@/lib/types";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
 export interface CreateBookingPayload {
@@ -148,7 +149,102 @@ export const updateBookingStatus = async (
 export const getTechnicianBookings = async () => {
   const bookings = await getMyBookings();
 
-  console.log("Technician Bookings:", bookings);
-
   return bookings ?? [];
+};
+
+
+
+export const cancelBooking = async (
+  bookingId: string
+) => {
+  try {
+    const cookieStore = await cookies();
+
+    const accessToken =
+      cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) {
+      return {
+        success: false,
+        message: "Please login first",
+      };
+    }
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/booking/${bookingId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Cookie: `accessToken=${accessToken}`,
+        },
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return {
+        success: false,
+        message: result.message,
+      };
+    }
+
+    revalidatePath("/dashboard/bookings");
+
+    return {
+      success: true,
+      message: result.message,
+    };
+  } catch {
+    return {
+      success: false,
+      message: "Something went wrong",
+    };
+  }
+};
+
+export const getBookingStats = async () => {
+  const bookings = await getMyBookings();
+
+  return {
+    total: bookings.length,
+    requested: bookings.filter(
+      (b: Booking) => b.status === "REQUESTED"
+    ).length,
+
+    accepted: bookings.filter(
+      (b: Booking) => b.status === "ACCEPTED"
+    ).length,
+
+    completed: bookings.filter(
+      (b: Booking) => b.status === "COMPLETED"
+    ).length,
+
+    cancelled: bookings.filter(
+      (b: Booking) => b.status === "CANCELLED"
+    ).length,
+  };
+};
+
+export const getSingleBooking = async (
+  bookingId: string
+) => {
+  const cookieStore = await cookies();
+
+  const accessToken =
+    cookieStore.get("accessToken")?.value;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/booking/${bookingId}`,
+    {
+      headers: {
+        Cookie: `accessToken=${accessToken}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  const result = await response.json();
+
+  return result.data;
 };
