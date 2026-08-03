@@ -106,6 +106,29 @@ export default function TechnicianDashboard({
       </div>
 
       {/* Services */}
+
+    <Card>
+  <CardContent className="pt-6">
+    <div className="flex items-center justify-between">
+      <div>
+        <h2 className="text-xl font-semibold">
+          Booking Requests
+        </h2>
+
+        <p className="mt-1 text-sm text-muted-foreground">
+          View and manage customer booking requests.
+        </p>
+      </div>
+
+      <Link href="/technician-dashboard/bookings">
+        <Button>
+          View Requests
+        </Button>
+      </Link>
+    </div>
+  </CardContent>
+</Card>
+
       <Card>
   <CardContent className="pt-6">
     <div className="mb-6 flex items-center justify-between">
