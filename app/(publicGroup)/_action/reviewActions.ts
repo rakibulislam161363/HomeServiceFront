@@ -64,3 +64,23 @@ export const getMyReview = async (
 
   return result.data;
 };
+export const getMyReviews = async () => {
+  const cookieStore = await cookies();
+
+  const token =
+    cookieStore.get("accessToken")?.value;
+
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/review/my-reviews`,
+    {
+      headers: {
+        Cookie: `accessToken=${token}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  const result = await response.json();
+
+  return result.data;
+};

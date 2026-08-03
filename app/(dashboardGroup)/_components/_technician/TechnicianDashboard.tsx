@@ -235,6 +235,7 @@ export default function TechnicianDashboard({
   </CardContent>
 </Card>
 
+
     </div>
   );
 }
