@@ -1,8 +1,14 @@
-import { getBookingStats } from "@/app/(publicGroup)/_action/bookingActions";
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  CalendarDays,
+  CreditCard,
+  Star,
+  User,
+} from "lucide-react";
 
-export default async function CustomerDashboardPage() {
-  const stats = await getBookingStats();
-
+export default function CustomerDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
@@ -11,56 +17,77 @@ export default async function CustomerDashboardPage() {
         </h1>
 
         <p className="text-muted-foreground">
-          Welcome back.
+          Manage your bookings, payments and profile.
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        <StatCard
-          title="Total Bookings"
-          value={stats.total}
-        />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
 
-        <StatCard
-          title="Requested"
-          value={stats.requested}
-        />
+        <Card>
+          <CardContent className="pt-6 text-center">
+            <CalendarDays className="mx-auto mb-4 h-10 w-10 text-primary" />
 
-        <StatCard
-          title="Accepted"
-          value={stats.accepted}
-        />
+            <h2 className="text-lg font-semibold">
+              My Bookings
+            </h2>
 
-        <StatCard
-          title="Completed"
-          value={stats.completed}
-        />
+            <Link href="/dashboard/bookings">
+              <Button className="mt-5 w-full">
+                View
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
 
-        <StatCard
-          title="Cancelled"
-          value={stats.cancelled}
-        />
+        <Card>
+          <CardContent className="pt-6 text-center">
+            <CreditCard className="mx-auto mb-4 h-10 w-10 text-primary" />
+
+            <h2 className="text-lg font-semibold">
+              Payments
+            </h2>
+
+            <Link href="/dashboard/payments">
+              <Button className="mt-5 w-full">
+                View
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent className="pt-6 text-center">
+            <Star className="mx-auto mb-4 h-10 w-10 text-primary" />
+
+            <h2 className="text-lg font-semibold">
+              Reviews
+            </h2>
+
+            <Link href="/dashboard/reviews">
+              <Button className="mt-5 w-full">
+                View
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        {/* <Card>
+          <CardContent className="pt-6 text-center">
+            <User className="mx-auto mb-4 h-10 w-10 text-primary" />
+
+            <h2 className="text-lg font-semibold">
+              Profile
+            </h2>
+
+            <Link href="/dashboard/profile">
+              <Button className="mt-5 w-full">
+                View
+              </Button>
+            </Link>
+          </CardContent>
+        </Card> */}
+
       </div>
-    </div>
-  );
-}
-
-function StatCard({
-  title,
-  value,
-}: {
-  title: string;
-  value: number;
-}) {
-  return (
-    <div className="rounded-xl border bg-card p-6 shadow-sm">
-      <p className="text-muted-foreground">
-        {title}
-      </p>
-
-      <h2 className="mt-3 text-4xl font-bold">
-        {value}
-      </h2>
     </div>
   );
 }

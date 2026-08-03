@@ -9,6 +9,7 @@ import { Booking } from "@/lib/types";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { cancelBooking } from "@/app/(publicGroup)/_action/bookingActions";
+import ReviewForm from "@/app/(publicGroup)/_components/Review/ReviewForm";
 
 interface BookingCardProps {
   booking: Booking;
@@ -18,6 +19,7 @@ export default function BookingCard({
   booking,
 }: BookingCardProps) {
   const router = useRouter();
+  
 
   const handleCancel = async () => {
   const result = await cancelBooking(
@@ -118,6 +120,9 @@ export default function BookingCard({
           </p>
         </div>
       )}
+      {booking.status === "PAID" && (
+  <ReviewForm bookingId={booking.id} />
+)}
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Link

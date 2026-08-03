@@ -51,7 +51,7 @@ export const createPayment = async (
     return {
       success: true,
       message: result.message,
-      data: result.data, // ✅ এটা অবশ্যই থাকতে হবে
+      data: result.data, 
     };
   } catch (error) {
     console.error(error);
@@ -60,5 +60,36 @@ export const createPayment = async (
       success: false,
       message: "Something went wrong",
     };
+  }
+};
+
+export const getMyPayments = async () => {
+  try {
+    const cookieStore = await cookies();
+
+    const accessToken =
+      cookieStore.get("accessToken")?.value;
+
+    if (!accessToken) return [];
+
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/payment`,
+      {
+        headers: {
+          Cookie: `accessToken=${accessToken}`,
+        },
+        cache: "no-store",
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      return [];
+    }
+
+    return result.data ?? [];
+  } catch {
+    return [];
   }
 };
