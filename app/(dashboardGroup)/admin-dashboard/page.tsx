@@ -25,31 +25,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { getAllUsers } from "./users/_actions/userActions";
+import { getAllUsers, getUserStats } from "./users/_actions/userActions";
 
 
-const stats = [
-  {
-    title: "Total Users",
-    value: "1250",
-    icon: Users,
-  },
-  {
-    title: "Technicians",
-    value: "320",
-    icon: Wrench,
-  },
-  {
-    title: "Bookings",
-    value: "850",
-    icon: CalendarCheck,
-  },
-  {
-    title: "Reviews",
-    value: "540",
-    icon: Star,
-  },
-];
+
 
 
 
@@ -58,9 +37,35 @@ const stats = [
 export default async function AdminDashboard() {
 
 
-  const result = await getAllUsers();
+const statsResult = await getUserStats();
+const result = await getAllUsers();
 
-  const users = result?.data || [];
+ const userStats = statsResult?.data;
+const users = result?.data || [];
+
+const stats = [
+  {
+    title: "Total Users",
+    value: userStats?.totalUsers || 0,
+    icon: Users,
+  },
+  {
+    title: "Customers",
+    value: userStats?.customers || 0,
+    icon: Users,
+  },
+  {
+    title: "Technicians",
+    value: userStats?.technicians || 0,
+    icon: Wrench,
+  },
+  {
+    title: "Active Users",
+    value: userStats?.activeUsers || 0,
+    icon: UserCheck,
+  },
+];
+  
 
 
 
@@ -165,9 +170,9 @@ export default async function AdminDashboard() {
 
 
 
-          <Button>
+          {/* <Button>
             Add User
-          </Button>
+          </Button> */}
 
 
         </CardHeader>

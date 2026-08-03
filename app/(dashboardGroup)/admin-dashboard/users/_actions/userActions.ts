@@ -65,3 +65,33 @@ export const deleteUser = async (
 
   return res.json();
 };
+
+export const getUserStats = async () => {
+
+  const cookieStore = await cookies();
+
+
+  const cookie = cookieStore
+    .getAll()
+    .map(
+      (item) => `${item.name}=${item.value}`
+    )
+    .join("; ");
+
+
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/users/stats`,
+    {
+      headers:{
+        Cookie: cookie,
+      },
+
+      cache:"no-store",
+    }
+  );
+
+
+  return res.json();
+
+};
