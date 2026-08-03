@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getMyReviews } from "@/app/(publicGroup)/_action/reviewActions";
 import {
   Card,

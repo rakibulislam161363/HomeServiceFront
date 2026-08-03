@@ -1,3 +1,5 @@
+
+export const dynamic = "force-dynamic";
 import { getMyTechnicianProfile } from "../../_actions/getMyTechnicianProfile";
 import TechnicianProfileForm from "../../_components/_technician/TechnicianProfileForm";
 

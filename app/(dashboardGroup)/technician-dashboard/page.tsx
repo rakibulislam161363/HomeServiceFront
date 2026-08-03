@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { redirect } from "next/navigation";
 import { getMyTechnicianProfile } from "../_actions/getMyTechnicianProfile";
 import TechnicianDashboard from "../_components/_technician/TechnicianDashboard";

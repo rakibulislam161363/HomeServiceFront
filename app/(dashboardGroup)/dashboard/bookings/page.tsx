@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getMyBookings } from "@/app/(publicGroup)/_action/bookingActions";
 import { Booking } from "@/lib/types";
 import BookingCard from "@/app/(dashboardGroup)/_components/_dashboard/BookingCard";

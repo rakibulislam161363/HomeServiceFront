@@ -25,7 +25,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { getAllUsers, getUserStats } from "./users/_actions/userActions";
+import { getAllUsers, getUserStats } from "./_actions/userActions";
 
 
 
