@@ -12,18 +12,21 @@ export default function PayNowButton({
   bookingId,
 }: Props) {
   const handlePayment = async () => {
-    const result = await createPayment(
-      bookingId
-    );
+    const result = await createPayment(bookingId);
 
-    if (!result.success) {
-      toast.error(result.message);
-      return;
-    }
+if (!result.success) {
+  toast.error(result.message);
+  return;
+}
 
-    window.location.href =
-      result.data.checkoutUrl;
-  };
+if (!result.data?.checkoutUrl) {
+  toast.error("Checkout URL not found");
+  console.log(result);
+  return;
+}
+
+window.location.href = result.data.checkoutUrl;
+  }
 
   return (
     <Button

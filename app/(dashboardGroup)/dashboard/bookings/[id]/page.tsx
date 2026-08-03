@@ -6,6 +6,7 @@ import {
   User,
   BadgeDollarSign,
 } from "lucide-react";
+import PayNowButton from "@/app/(publicGroup)/_components/payment/BookingDetails";
 
 interface PageProps {
   params: Promise<{
@@ -72,6 +73,12 @@ export default async function BookingDetailsPage({
 
           <p>{booking.status}</p>
         </div>
+
+        {booking.status === "ACCEPTED" && (
+  <div className="pt-4">
+    <PayNowButton bookingId={booking.id} />
+  </div>
+)}
 
         {booking.note && (
           <div>

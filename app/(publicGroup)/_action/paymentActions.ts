@@ -1,8 +1,17 @@
 "use server";
-
 import { cookies } from "next/headers";
 
-export const createPayment = async (bookingId: string) => {
+
+interface PaymentActionResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    checkoutUrl: string;
+  };
+}
+export const createPayment = async (
+  bookingId: string
+): Promise<PaymentActionResponse> => {
   try {
     const cookieStore = await cookies();
 
@@ -17,32 +26,32 @@ export const createPayment = async (bookingId: string) => {
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/payments/create`,
+      `${process.env.NEXT_PUBLIC_API_URL}/api/payment/create`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Cookie: `accessToken=${accessToken}`,
         },
-        body: JSON.stringify({
-          bookingId,
-        }),
+        body: JSON.stringify({ bookingId }),
       }
     );
 
     const result = await response.json();
 
+    console.log(result);
+
     if (!response.ok) {
       return {
         success: false,
-        message:
-          result.message || "Payment failed",
+        message: result.message,
       };
     }
 
     return {
       success: true,
-      data: result.data,
+      message: result.message,
+      data: result.data, // ✅ এটা অবশ্যই থাকতে হবে
     };
   } catch (error) {
     console.error(error);
